@@ -38,12 +38,10 @@ int main(int ac, char **av, char **env)
 			nread = -1;
 			dup_str = str_dup(line);
 			argv = _argv(dup_str);
+			if (!argv[0])
+				break;
 			if ((execve(argv[0], argv, env)) == -1)
-			{
 				perror(argv[0]);
-				/*free(argv);
-				free(dup_str);*/
-			}
 		}
 		else
 		{

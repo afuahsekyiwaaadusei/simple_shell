@@ -17,10 +17,6 @@ char **_argv(char *line)
 	char **argv;
 
 	arg_count = get_arg_no(line);
-	if (arg_count == 0)
-	{
-		exit(-1);
-	}
 	arg_count++;
 	argv = malloc(sizeof(char *) * arg_count);
 	token = strtok(line, " ");
