@@ -22,57 +22,39 @@ int main(int ac, char **av, char **env)
 	ssize_t nread, nwrite;
 	size_t  n = 0;
 	pid_t pid = -1;
-
-	
 	(void)ac;
 	(void)av;
-	if ((isatty(STDIN_FILENO)) != 1)
-		nread = getline(&line, &n, stdin);
-	else
-	{
-		nwrite = write(STDOUT_FILENO, buf, sizeof(buf));
-		print_err(nwrite, "write");
-		nread = getline(&line, &n, stdin);
-	}
+
+
+	start(&line, &n, buf, &nread, &nwrite);
 	while (nread != -1)
 	{
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 		pid = fork();
-		print_err(pid, "pid");
+		print_err(nwrite, "write");
 		if (pid == 0)
 		{
 			nread = -1;
 			dup_str = str_dup(line);
 			argv = _argv(dup_str);
 			if ((execve(argv[0], argv, env)) == -1)
-				perror("./shell");
+			{
+				perror(argv[0]);
+				free(argv);
+				free(dup_str);
+			}
 		}
 		else
 		{
 			wait(NULL);
 			free(line);
 			line = NULL;
-			/*nwrite = write(STDOUT_FILENO, buf, sizeof(buf));
-			print_err(nwrite, "write");
-			nread = getline(&line, &n, stdin);*/
-			if ((isatty(STDIN_FILENO)) != 1)
-				nread = getline(&line, &n, stdin);
-			else
-			{
-				nwrite = write(STDOUT_FILENO, buf, sizeof(buf));
-				print_err(nwrite, "write");
-				nread = getline(&line, &n, stdin);
-			}
+			start(&line, &n, buf, &nread, &nwrite);
 
 		}
 	}
 	free(line);
-	if (pid == 0)
-	{
-		free(argv);
-		free(dup_str);
-	}
 	return (0);
 }
 
@@ -89,3 +71,27 @@ void print_err(ssize_t n, char *str)
 		perror(str);
 }
 
+
+
+/**
+ *start - determines wheter shell is in interactive or non interactive mode.
+ *@line: buffer containing text read.
+ *@n: size of buffer.
+ *@buf: buffer containing text to write in interactive mode.
+ *@nread: number of bytes read.
+ *@nwrite: number of bytes written.
+ */
+
+
+void start(char **line, size_t *n, char *buf, ssize_t *nread, ssize_t *nwrite)
+{
+	if ((isatty(STDIN_FILENO)) != 1)
+		(*nread) = getline(line, n, stdin);
+	else
+	{
+		(*nwrite) = write(STDOUT_FILENO, buf, sizeof((buf)));
+		print_err(*nwrite, "write");
+		(*nread) = getline(line, n, stdin);
+	}
+
+}
