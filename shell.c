@@ -32,7 +32,7 @@ int main(int ac, char **av, char **env)
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 		pid = fork();
-		print_err(nwrite, "write");
+		print_err(pid, "pid");
 		if (pid == 0)
 		{
 			nread = -1;
@@ -41,8 +41,8 @@ int main(int ac, char **av, char **env)
 			if ((execve(argv[0], argv, env)) == -1)
 			{
 				perror(argv[0]);
-				free(argv);
-				free(dup_str);
+				/*free(argv);
+				free(dup_str);*/
 			}
 		}
 		else
@@ -55,6 +55,11 @@ int main(int ac, char **av, char **env)
 		}
 	}
 	free(line);
+	if (pid == 0)
+	{
+		free(argv);
+		free(dup_str);
+	}
 	return (0);
 }
 
