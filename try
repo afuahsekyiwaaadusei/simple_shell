@@ -2,8 +2,36 @@
 #include <stdio.h>
 #include "main.h"
 
-
+/**
+ * main - used to test which function
+ *
+ * Return: always 0.
+ */
 int main(void)
+{
+	char *path = which("ls");
+
+	printf("%s\n", path);
+	return (0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * main - used to test how the shell.c behaves when space is passed to it
+ *
+ * Return: always 0.
+ */
+/*int main(void)
 {
 	char *line = NULL, *dup_str, **argv;
 	size_t n = 0;
@@ -22,4 +50,4 @@ int main(void)
 	fflush(stdout);
 	if (execve(argv[0], argv, NULL) == -1)
 		perror(argv[0]);
-}
+}*/
