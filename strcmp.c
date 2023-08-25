@@ -5,8 +5,8 @@
 
 /**
  *_strcmp - a function that compares two strings.
- *@s1 - first string.
- *@s2 - second string.
+ *@s1: first string.
+ *@s2: second string.
  *
  *Return: zero if equal.
  */
@@ -25,8 +25,7 @@ int _strcmp(char *s1, char *s2)
 		{
 			if (s1[i] != s2[i])
 				return (-1);
-			else
-				i++;
+			i++;
 		}
 		return (0);
 	}
