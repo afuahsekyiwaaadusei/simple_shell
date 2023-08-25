@@ -70,7 +70,7 @@ void builtin(char **line, char ***argv, char **dup_str)
 		free(*line);
 		free(*argv);
 		free(*dup_str);
-		exit();
+		exit(errno);
 	}
 	return;
 
