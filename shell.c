@@ -9,22 +9,16 @@
 /**
  *main - a program that prints "$ ",
  *wait for the user to enter a command, and executes it.
- *@ac: count of program arguments.
- *@av: array of program arguements.
- *@env: program environment.
  *
  *Return: always 0.
  */
 
-int main(int ac, char **av, char **env)
+int main(void)
 {
 	char *line = NULL, **argv, *dup_str, buf[] = "cisfun$ ";
 	ssize_t nread, nwrite;
 	size_t  n = 0;
 	pid_t pid = -1;
-	(void)ac;
-	(void)av;
-
 
 	start(&line, &n, buf, &nread, &nwrite);
 	while (nread != -1)
@@ -38,16 +32,10 @@ int main(int ac, char **av, char **env)
 			nread = -1;
 			dup_str = str_dup(line);
 			argv = _argv(dup_str);
+			builtin(&line, &argv, &dup_str);
 			if (!argv[0])
 				break;
-			if ((_strcmp(argv[0],"exit")) == 0)
-			{
-				free(argv);
-				free(line);
-				free(dup_str);
-				exit(0);
-			}
-			if ((execve(argv[0], argv, env)) == -1)
+			if ((execve(argv[0], argv, environ)) == -1)
 				perror(argv[0]);
 		}
 		else
@@ -56,7 +44,6 @@ int main(int ac, char **av, char **env)
 			free(line);
 			line = NULL;
 			start(&line, &n, buf, &nread, &nwrite);
-
 		}
 	}
 	free(line);
@@ -71,16 +58,23 @@ int main(int ac, char **av, char **env)
 
 
 /**
- *print_err - prints the error message.
- *@n: return value of called function.
- *@str: string.
+ *builtin - to check builtins.
+ *@line: buffer containig text read
+ *@argv: arguement vector.
+ *@dup_str: string duplicate.
  */
-/*void print_err(ssize_t n, char *str)
+void builtin(char **line, char ***argv, char **dup_str)
 {
-	if (n == -1 && errno != 0)
-		perror(str);
-}*/
+	if ((_strcmp((*argv)[0], "exit")) == 0)
+	{
+		free(*line);
+		free(*argv);
+		free(*dup_str);
+		exit();
+	}
+	return;
 
+}
 
 
 /**

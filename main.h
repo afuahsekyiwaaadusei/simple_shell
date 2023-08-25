@@ -23,5 +23,6 @@ void print_err(ssize_t n, char *str);
 int _strcmp(char *s1, char *s2);
 int _strlen(char *str);
 char *_strcat(char *s1, char *s2);
+void builtin(char **line, char ***argv, char **dup_str);
 #endif
 
