@@ -16,35 +16,43 @@ char *check(char *cwd);
 
 char *which(char *av)
 {
-	int j = 0;
-	char *PATH = getenv("PATH"), *cwd;
+	int j = 0, i = 0;
+	char *PATH = getenv("PATH"), *cwd, *data;
 	struct stat st;
-	node *node;
+	node *node, *prev;
 	
 	cwd = check(cwd);
-	printf("%s\n", cwd);
 	if (!cwd)
-		perror("cwd");
-	if (stat(av, &st) == 0)
+		return (0);
+	/*if (stat(av, &st) == 0)
+	{
+		free(cwd);
 		return(av);
+	}*/
 	else
 	{
 		node = list();
 		while (node != NULL)
 		{
+			prev = node;
 			j = chdir(node->data);
 			print_err(j, "chdir");
 			if (stat(av, &st) == 0)
 			{
 				j = chdir(cwd);
 				print_err(j, "chdir");
-				return(node ->data);
+				free(cwd);
+				return(node->data);
 			}
 			node  = node->next;
+			free(prev);
+			i++;
 		}
 	}
 	j = chdir(cwd);
 	print_err(j, "chdir");
+	free(cwd);
+	free(node);
 	return (NULL);
 }
 
@@ -71,7 +79,6 @@ char *check(char *cwd)
 		cwd = getcwd(buf, size);
 		if (cwd != NULL)
 		{
-			free(buf);
 			return (cwd);
 		}
 		else
@@ -83,7 +90,6 @@ char *check(char *cwd)
 			else
 			{
 				perror("getcwd");
-				free(buf);
 				return (0);
 			}
 		}

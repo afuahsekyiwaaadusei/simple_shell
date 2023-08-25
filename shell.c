@@ -68,11 +68,11 @@ int main(int ac, char **av, char **env)
  *@n: return value of called function.
  *@str: string.
  */
-void print_err(ssize_t n, char *str)
+/*void print_err(ssize_t n, char *str)
 {
 	if (n == -1 && errno != 0)
 		perror(str);
-}
+}*/
 
 
 
