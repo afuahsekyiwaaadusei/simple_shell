@@ -15,7 +15,7 @@ node *list(void)
 	node *first;
 	node *new_node = malloc(sizeof(node));
 	node *last = NULL;
-	
+
 	while (env[i])
 	{
 		if (last)
