@@ -22,6 +22,7 @@ int main(int ac, char **av, char **env)
 	ssize_t nread, nwrite;
 	size_t  n = 0;
 	pid_t pid = -1;
+	int status = 0;
 	(void)ac;
 	(void)av;
 
@@ -40,6 +41,13 @@ int main(int ac, char **av, char **env)
 			argv = _argv(dup_str);
 			if (!argv[0])
 				break;
+			if ((_strcmp(argv[0],"exit")) == 0)
+			{
+				free(argv);
+				free(line);
+				free(dup_str);
+				exit(status);
+			}
 			if ((execve(argv[0], argv, env)) == -1)
 				perror(argv[0]);
 		}

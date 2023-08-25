@@ -7,19 +7,42 @@
  *
  * Return: always 0.
  */
-int main(void)
+/*int main(void)
 {
 	char *path = which("ls");
 
 	printf("%s\n", path);
 	return (0);
+}*/
+
+
+/**
+ *main - used to test strcmp function
+ *
+ *Return: always 0.
+ */
+
+/*int main(void)
+{
+	int i = _strcmp("env", "exit");
+	printf ("%d\n", i);
+	return (0);
+}*/
+
+
+/**
+ *main - used to test strcat function.
+ *
+ *Return: always 0;
+ */
+
+int main(void)
+{
+	char *str = _strcat("simple", "shell");
+
+	printf("%s\n", str);
+	return (0);
 }
-
-
-
-
-
-
 
 
 

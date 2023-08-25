@@ -20,5 +20,8 @@ typedef struct node
 node *list(void);
 char *which(char *av);
 void print_err(ssize_t n, char *str);
+int _strcmp(char *s1, char *s2);
+int _strlen(char *str);
+char *_strcat(char *s1, char *s2);
 #endif
 
